@@ -1,0 +1,116 @@
+import nltk
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer, WordNetLemmatizer
+from nltk.tokenize import word_tokenize
+
+nltk.download('punkt')
+nltk.download('wordnet')
+
+def lemm(text):
+    lemmatizer = WordNetLemmatizer()
+    tokens = word_tokenize(text)
+    lemmatized_tokens = [lemmatizer.lemmatize(token) for token in tokens]
+    return ' '.join(lemmatized_tokens)
+
+def stemm(text):
+    stemmer = PorterStemmer()
+    tokens = word_tokenize(text)
+    stemmed_tokens = [stemmer.stem(token) for token in tokens]
+    return ' '.join(stemmed_tokens)
+
+def check_lemm(text):
+    lemmatizer = WordNetLemmatizer()
+    tokens = word_tokenize(text)
+    lemmatized_tokens = [lemmatizer.lemmatize(token) for token in tokens]
+    return lemmatized_tokens
+
+def check_stemm(text):
+    stemmer = PorterStemmer()
+    tokens = word_tokenize(text)
+    stemmed_tokens = [stemmer.stem(token) for token in tokens]
+    return stemmed_tokens
+
+def lemmVSstemm(text):
+    lemmatized_tokens = check_lemm(text)
+    stemmed_tokens = check_stemm(text)
+    print("Lemmatized tokens:", lemmatized_tokens)
+    print("\n\nStemmed tokens:", stemmed_tokens)
+
+def display_menu():
+    print("Menu:")
+    print("1. Lemmatization")
+    print("2. Stemming")
+    print("3. Check Lemmatization")
+    print("4. Check Stemming")
+    print("5. Compare Lemmatization vs Stemming")
+    print("6. Remove custom stopwords.")
+    print("7. Exit")
+
+def user_input():
+    choice = input("Enter your choice (1-7): ")
+    return choice
+
+def file_input(filename):
+    with open(filename, 'r') as f1:
+        text = f1.read()
+    return text
+
+def remove_stopwords(text):
+    stop_words = set(stopwords.words('english'))
+
+    user_input = input("Enter stopwords to remove (separated by spaces): ")
+    custom_stopwords = user_input.split()
+
+    stop_words.update(custom_stopwords)  # Add user input stopwords to the existing stopwords
+
+    tokens = word_tokenize(text)
+    filtered_tokens = [word for word in tokens if word.lower() not in stop_words]
+
+    return ' '.join(filtered_tokens)
+
+# Main program
+while True:
+    display_menu()
+    choice = user_input()
+
+    if choice == '1':
+        filename = input("Enter the filename: ")
+        text = file_input(filename)
+        lemmatized_text = lemm(text)
+        print("Lemmatized text:", lemmatized_text)
+        print()
+    elif choice == '2':
+        filename = input("Enter the filename: ")
+        text = file_input(filename)
+        stemmed_text = stemm(text)
+        print("Stemmed text:", stemmed_text)
+        print()
+    elif choice == '3':
+        filename = input("Enter the filename: ")
+        text = file_input(filename)
+        lemmatized_tokens = check_lemm(text)
+        print("Lemmatized tokens:", lemmatized_tokens)
+        print()
+    elif choice == '4':
+        filename = input("Enter the filename: ")
+        text = file_input(filename)
+        stemmed_tokens = check_stemm(text)
+        print("Stemmed tokens:", stemmed_tokens)
+        print()
+    elif choice == '5':
+        filename = input("Enter the filename: ")
+        text = file_input(filename)
+        lemmVSstemm(text)
+        print()
+    elif choice == '6':
+        filename = input("Enter the filename: ")
+        text = file_input(filename)
+        customlist = remove_stopwords(text)
+        print("After removing custom stopwords:",customlist)
+        print()
+    elif choice == '7':
+        print("Exiting the program.")
+        break
+    else:
+        print("Invalid choice. Please try again.")
+        print()
